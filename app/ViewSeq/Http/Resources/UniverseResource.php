@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace ViewSeq\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+use ViewSeq\Models\Universe;
+
+class UniverseResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+        /** @var Universe $universe */
+        $universe = $this->resource;
+
+        return [
+            'en_name' => $universe->en_name,
+            'ru_name' => $universe->ru_name,
+            'description' => $universe->description,
+            'created_at' => $universe->created_at->toDateString(),
+            'updated_at' => $universe->updated_at->toDateString(),
+        ];
+    }
+}
