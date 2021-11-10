@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\ViewSeq\Http\Routes;
+namespace ViewSeq\Http\Routes;
 
 use Illuminate\Support\Facades\Route;
 use ViewSeq\Http\Controllers\UniverseController;

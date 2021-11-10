@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Shared\Exceptions\ObjectNotFoundException;
 use Shared\ValueObjects\Paginator;
 
-class BaseRepository
+abstract class BaseDBRepository
 {
     protected const CURRENT_PAGE = 1;
     protected const PER_PAGE = 20;
@@ -27,7 +27,7 @@ class BaseRepository
      * @return Model
      * @throws ObjectNotFoundException
      */
-    public function show(int $id): Model
+    public function getById(int $id): Model
     {
         /** @var Model|null $model */
         $model = $this->createQuery()->find($id);
@@ -39,7 +39,7 @@ class BaseRepository
         return $model;
     }
 
-    public function store(array $attributes): Model
+    public function save(array $attributes): Model
     {
         $model = $this->model::create($attributes);
         $model->save();
@@ -55,7 +55,7 @@ class BaseRepository
      */
     public function update(int $modelId, array $attributes): Model
     {
-        $model = $this->show($modelId);
+        $model = $this->getById($modelId);
         $model->update($attributes);
 
         return $model;
@@ -66,9 +66,9 @@ class BaseRepository
      * @throws ObjectNotFoundException
      * @throws Exception
      */
-    public function destroy(int $modelId): void
+    public function delete(int $modelId): void
     {
-        $model = $this->show($modelId);
+        $model = $this->getById($modelId);
         $model->delete();
     }
 

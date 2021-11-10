@@ -17,9 +17,12 @@ class UniverseResource extends JsonResource
         return [
             'en_name' => $universe->en_name,
             'ru_name' => $universe->ru_name,
-            'description' => $universe->description,
-            'created_at' => $universe->created_at->toDateString(),
-            'updated_at' => $universe->updated_at->toDateString(),
+            'creator' => $universe->creator,
+            'description' => $universe->meta->getDescription(),
+            'birth_date' => $universe->meta->getBirthDate()->toDateString(),
+            'wiki_link' => $universe->meta->getWikiLink(),
+            'created_at' => $universe->created_at->toDateTimeString(),
+            'updated_at' => $universe->updated_at->toDateTimeString(),
         ];
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ViewSeq\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use Shared\Repositories\BaseRepository;
+use Shared\Repositories\BaseDBRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Shared\ValueObjects\Paginator;
 use ViewSeq\Models\Universe;
@@ -13,14 +13,14 @@ use ViewSeq\Models\Universe;
 /**
  * @property Universe $model
  */
-class UniverseRepository extends BaseRepository
+class UniverseRepository extends BaseDBRepository
 {
-    public function index(?Paginator $paginator = null, string $nameFragment = ''): Collection
+    public function getCollectionWithSearchAndPagination(string $search, ?Paginator $paginator): Collection
     {
         $query = $this->createQuery();
 
-        if ($nameFragment) {
-            $query = $this->queryByNameFragments($query, $nameFragment);
+        if ($search) {
+            $query = $this->queryByNameFragments($query, $search);
         }
 
         $query = $this->queryByPaginator($query, $paginator);
@@ -28,12 +28,13 @@ class UniverseRepository extends BaseRepository
         return $query->get();
     }
 
-    protected function queryByNameFragments(Builder $query, string $nameFragment): Builder
+    protected function queryByNameFragments(Builder $query, string $search): Builder
     {
-        return $query->where(function ($query) use ($nameFragment) {
+        return $query->where(function ($query) use ($search) {
             $query
-                ->where('en_name', 'like', '%' . $nameFragment . '%')
-                ->orWhere('ru_name', 'like', '%' . $nameFragment . '%');
+                ->where('en_name', 'like', '%' . $search . '%')
+                ->orWhere('ru_name', 'like', '%' . $search . '%')
+                ->orWhere('creator', 'like', '%' . $search . '%');
         });
     }
 }

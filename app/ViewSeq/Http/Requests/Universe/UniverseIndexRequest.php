@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ViewSeq\Http\Requests\Universe;
 
+use Shared\Dto\SearchPaginationDto;
 use Shared\Http\Requests\PaginationRequest;
 
 class UniverseIndexRequest extends PaginationRequest
@@ -16,7 +17,7 @@ class UniverseIndexRequest extends PaginationRequest
         return array_merge(
             parent::rules(),
             [
-                'search.name_fragment' => 'nullable|string|max:255',
+                'search.search' => 'nullable|string|max:255',
             ],
         );
     }
@@ -29,13 +30,17 @@ class UniverseIndexRequest extends PaginationRequest
         return array_merge(
             parent::attributes(),
             [
-                'search.name_fragment' => trans('universe.form.name_fragment'),
+                'search.search' => trans('universe.form.search'),
             ],
         );
     }
 
-    public function getNameFragment(): string
+    public function getSearchPaginationDto(): SearchPaginationDto
     {
-        return $this->input('attributes.name_fragment');
+        return new SearchPaginationDto(
+            $this->input('search'),
+            $this->getPage(),
+            $this->getPerPage(),
+        );
     }
 }

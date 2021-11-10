@@ -31,11 +31,13 @@ class PaginationRequest extends FormRequest
         ];
     }
 
-    public function getPaginator(): Paginator
+    public function getPage(): ?int
     {
-        return new Paginator(
-            (int)$this->input('pagination.page'),
-            (int)$this->input('pagination.per_page'),
-        );
+        return $this->input('pagination.page');
+    }
+
+    public function getPerPage(): ?int
+    {
+        return $this->input('pagination.per_page');
     }
 }

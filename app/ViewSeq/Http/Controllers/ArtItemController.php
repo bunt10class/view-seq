@@ -12,7 +12,7 @@ use ViewSeq\Http\Requests\Universe\UniverseStoreRequest;
 use ViewSeq\Http\Resources\UniverseResource;
 use ViewSeq\Services\UniverseService;
 
-class UniverseController
+class ArtItemController
 {
     protected UniverseService $universeService;
 
@@ -23,36 +23,15 @@ class UniverseController
 
     public function index(UniverseIndexRequest $request): PaginationResource
     {
-        $result = $this->universeService->index($request->getSearchPaginationDto());
+        $result = $this->universeService->index($request->getPaginator(), $request->getNameFragment());
 
         return PaginationResource::make($result, UniverseResource::class);
     }
 
-    public function show(int $universeId): UniverseResource
+    public function show(string $artItemId): UniverseResource
     {
         $result = $this->universeService->show($universeId);
 
         return UniverseResource::make($result);
-    }
-
-    public function store(UniverseStoreRequest $request): UniverseResource
-    {
-        $result = $this->universeService->store($request->getUniverseDto());
-
-        return UniverseResource::make($result);
-    }
-
-    public function update(UniverseStoreRequest $request, int $universeId): UniverseResource
-    {
-        $result = $this->universeService->update($universeId, $request->getUniverseDto());
-
-        return UniverseResource::make($result);
-    }
-
-    public function destroy(int $universeId): JsonResponse
-    {
-        $this->universeService->destroy($universeId);
-
-        return MessageResponse::makeOkResponse('Universe destroyed');
     }
 }
