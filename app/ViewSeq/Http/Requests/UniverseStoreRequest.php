@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ViewSeq\Http\Requests\Universe;
+namespace ViewSeq\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use ViewSeq\Dto\UniverseDto;
@@ -19,8 +19,9 @@ class UniverseStoreRequest extends FormRequest
             'attributes.ru_name' => 'required_without:en_name|string|max:255',
             'attributes.creator' => 'nullable|string|max:255',
             'attributes.description' => 'nullable|string|max:10000',
-            'attributes.birth_date' => 'nullable|string|max:255',
-            'attributes.wiki_link' => 'nullable|string|max:1000',
+            'attributes.birth_date' => 'nullable|string|date',
+            'attributes.links' => 'nullable|array',
+            'attributes.links.*' => 'nullable|string',
         ];
     }
 
@@ -30,12 +31,13 @@ class UniverseStoreRequest extends FormRequest
     public function attributes()
     {
         return [
-            'attributes.en_name' => trans('fields.en_name'),
-            'attributes.ru_name' => trans('fields.ru_name'),
-            'attributes.creator' => trans('fields.creator'),
-            'attributes.description' => trans('fields.description'),
-            'attributes.birth_date' => trans('fields.birth_date'),
-            'attributes.wiki_link' => trans('fields.wiki_link'),
+            'attributes.en_name' => trans('universe.fields.en_name'),
+            'attributes.ru_name' => trans('universe.fields.ru_name'),
+            'attributes.creator' => trans('universe.fields.creator'),
+            'attributes.description' => trans('universe.fields.description'),
+            'attributes.birth_date' => trans('universe.fields.birth_date'),
+            'attributes.links' => trans('universe.fields.links'),
+            'attributes.links.*' => trans('universe.fields.link'),
         ];
     }
 
@@ -47,7 +49,7 @@ class UniverseStoreRequest extends FormRequest
             $this->input('attributes.creator'),
             $this->input('attributes.description'),
             $this->input('attributes.birth_date'),
-            $this->input('attributes.wiki_link'),
+            $this->input('attributes.links'),
         );
     }
 }

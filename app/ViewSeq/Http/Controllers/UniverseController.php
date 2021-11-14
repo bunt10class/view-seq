@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace ViewSeq\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Shared\Http\Requests\IndexRequest;
 use Shared\Http\Resources\PaginationResource;
 use Shared\Http\Responses\MessageResponse;
-use ViewSeq\Http\Requests\Universe\UniverseIndexRequest;
-use ViewSeq\Http\Requests\Universe\UniverseStoreRequest;
+use ViewSeq\Http\Requests\UniverseStoreRequest;
 use ViewSeq\Http\Resources\UniverseResource;
 use ViewSeq\Services\UniverseService;
 
@@ -21,7 +21,7 @@ class UniverseController
         $this->universeService = $universeService;
     }
 
-    public function index(UniverseIndexRequest $request): PaginationResource
+    public function index(IndexRequest $request): PaginationResource
     {
         $result = $this->universeService->index($request->getSearchPaginationDto());
 

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace ViewSeq\Repositories;
+namespace ViewSeq\Repositories\ArtItem;
 
-use Shared\ValueObjects\Paginator;
 use ViewSeq\Models\ArtItem;
 
 /**

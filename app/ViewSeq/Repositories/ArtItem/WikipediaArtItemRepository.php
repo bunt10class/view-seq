@@ -2,17 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Wiki\Repositories;
+namespace ViewSeq\Repositories\ArtItem;
 
-use App\Api\Wiki\WikiClient;
 use ViewSeq\Models\ArtItem;
-use ViewSeq\Repositories\ArtItemRepository;
+use Wikipedia\Client;
 
-class WikiArtItemRepository implements ArtItemRepository
+class WikipediaArtItemRepository implements ArtItemRepository
 {
-    protected WikiClient $wikiClient;
+    protected Client $wikiClient;
 
-    public function __construct(WikiClient $wikiClient)
+    public function __construct(Client $wikiClient)
     {
         $this->wikiClient = $wikiClient;
     }
@@ -26,8 +25,6 @@ class WikiArtItemRepository implements ArtItemRepository
 
     public function getById(string $artItemId): ArtItem
     {
-        $data = $this->wikiClient->getById($artItemId);
-
-        return new ArtItem();
+        // TODO: Implement getById() method.
     }
 }

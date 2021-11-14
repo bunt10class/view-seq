@@ -26,8 +26,8 @@ class PaginationRequest extends FormRequest
     public function attributes()
     {
         return [
-            'pagination.page' => trans('pagination.page'),
-            'pagination.per_page' => trans('pagination.per_page'),
+            'pagination.page' => trans('shared.pagination.page'),
+            'pagination.per_page' => trans('shared.pagination.per_page'),
         ];
     }
 

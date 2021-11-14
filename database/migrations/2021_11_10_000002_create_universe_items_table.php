@@ -13,7 +13,7 @@ class CreateUniverseItemsTable extends Migration
             $table->unsignedBigInteger('universe_id');
             $table->string('en_name')->nullable();
             $table->string('ru_name')->nullable();
-            $table->string('art_item_type')->index();
+            $table->string('art_item_type');
             $table->string('released_at')->nullable();
             $table->unsignedBigInteger('next_item_id')->nullable();
             $table->json('meta')->nullable();
@@ -21,6 +21,7 @@ class CreateUniverseItemsTable extends Migration
 
             $table->foreign('universe_id')->references('universe_id')->on('universes');
             $table->foreign('next_item_id')->references('universe_item_id')->on('universe_items');
+            $table->index('art_item_type');
             $table->index('released_at');
             $table->index(['art_item_type', 'released_at']);
         });

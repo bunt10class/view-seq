@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace ViewSeq\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
-use Shared\Repositories\BaseDBRepository;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Shared\Repositories\BaseEloquentRepository;
 use Illuminate\Database\Eloquent\Builder;
 use Shared\ValueObjects\Paginator;
 use ViewSeq\Models\Universe;
@@ -13,22 +14,20 @@ use ViewSeq\Models\Universe;
 /**
  * @property Universe $model
  */
-class UniverseRepository extends BaseDBRepository
+class UniverseRepository extends BaseEloquentRepository
 {
-    public function getCollectionWithSearchAndPagination(string $search, ?Paginator $paginator): Collection
+    public function getCollectionWithSearchAndPagination(string $search, ?Paginator $paginator): LengthAwarePaginator
     {
         $query = $this->createQuery();
 
         if ($search) {
-            $query = $this->queryByNameFragments($query, $search);
+            $query = $this->queryByString($query, $search);
         }
 
-        $query = $this->queryByPaginator($query, $paginator);
-
-        return $query->get();
+        return $this->getWithPaginate($query, $paginator);
     }
 
-    protected function queryByNameFragments(Builder $query, string $search): Builder
+    protected function queryByString(Builder $query, string $search): Builder
     {
         return $query->where(function ($query) use ($search) {
             $query

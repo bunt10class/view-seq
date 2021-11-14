@@ -20,7 +20,7 @@ class UniverseResource extends JsonResource
             'creator' => $universe->creator,
             'description' => $universe->meta->getDescription(),
             'birth_date' => $universe->meta->getBirthDate()->toDateString(),
-            'wiki_link' => $universe->meta->getWikiLink(),
+            'links' => $universe->meta->getLinks(),
             'created_at' => $universe->created_at->toDateTimeString(),
             'updated_at' => $universe->updated_at->toDateTimeString(),
         ];

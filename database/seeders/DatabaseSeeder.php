@@ -2,16 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\ViewSeq\Models\Universe;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
-        Universe::factory(10)->create();
+        $this->call(UniverseSeeder::class);
     }
 }

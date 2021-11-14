@@ -7,10 +7,11 @@ namespace Shared\Repositories;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Shared\Exceptions\ObjectNotFoundException;
 use Shared\ValueObjects\Paginator;
 
-abstract class BaseDBRepository
+abstract class BaseEloquentRepository
 {
     protected const CURRENT_PAGE = 1;
     protected const PER_PAGE = 20;
@@ -77,8 +78,8 @@ abstract class BaseDBRepository
         return $this->model->select('*');
     }
 
-    protected function queryByPaginator(Builder $query, ?Paginator $paginator): Builder
+    protected function getWithPaginate(Builder $query, ?Paginator $paginator): LengthAwarePaginator
     {
-        return $query->forPage($paginator->getPage(), $paginator->getPerPage());
+        return $query->paginate($paginator->getPerPage(), $columns = ['*'], $pageName = 'page', $paginator->getPage());
     }
 }

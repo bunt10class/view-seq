@@ -8,15 +8,15 @@ use Shared\ValueObjects\Datetime;
 
 class UniverseMeta
 {
-    protected string $description;
-    protected Datetime $birthDate;
-    protected string $wikiLink;
+    protected ?string $description;
+    protected ?Datetime $birthDate;
+    protected array $links;
 
-    public function __construct(string $description, Datetime $birthDate, string $wikiLink)
+    public function __construct(?string $description, ?Datetime $birthDate, array $links)
     {
         $this->description = $description;
         $this->birthDate = $birthDate;
-        $this->wikiLink = $wikiLink;
+        $this->links = $links;
     }
 
     public function getDescription(): string
@@ -24,14 +24,14 @@ class UniverseMeta
         return $this->description;
     }
 
-    public function getBirthDate(): Datetime
+    public function getBirthDate(): ?Datetime
     {
         return $this->birthDate;
     }
 
-    public function getWikiLink(): string
+    public function getLinks(): array
     {
-        return $this->wikiLink;
+        return $this->links;
     }
 
     public function toArray(): array
@@ -39,7 +39,7 @@ class UniverseMeta
         return [
             'description' => $this->getDescription(),
             'birth_date' => $this->getBirthDate(),
-            'wiki_link' => $this->getWikiLink(),
+            'links' => $this->getLinks(),
         ];
     }
 }

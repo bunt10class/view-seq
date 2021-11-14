@@ -6,7 +6,9 @@ namespace ViewSeq\Services;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Shared\Dto\SearchPaginationDto;
+use Shared\Factories\PaginatorFactory;
 use Shared\ValueObjects\Paginator;
 use ViewSeq\Dto\UniverseDto;
 use ViewSeq\Repositories\UniverseRepository;
@@ -20,10 +22,10 @@ class UniverseService
         $this->universeRepository = $universeRepository;
     }
 
-    public function index(SearchPaginationDto $searchPaginationDto): Collection
+    public function index(SearchPaginationDto $searchPaginationDto): LengthAwarePaginator
     {
         $search = $searchPaginationDto->getSearch() ?? '';
-        $paginator = new Paginator($searchPaginationDto->getPage(), $searchPaginationDto->getPerPage());
+        $paginator = PaginatorFactory::makePaginator($searchPaginationDto->getPage(), $searchPaginationDto->getPerPage());
 
         return $this->universeRepository->getCollectionWithSearchAndPagination($search, $paginator);
     }
@@ -35,32 +37,26 @@ class UniverseService
 
     public function store(UniverseDto $universeDto): Model
     {
-        $attributes = [
-            'en_name' => $universeDto->getEnName(),
-            'ru_name' => $universeDto->getRuName(),
-            'creator' => $universeDto->getCreator(),
-            'meta' => [
-                'description' => $universeDto->getDescription(),
-                'birth_date' => $universeDto->getBirthDate(),
-                'wiki_link' => $universeDto->getWikiLink(),
-            ],
-        ];
-        return $this->universeRepository->save($attributes);
+        return $this->universeRepository->save($this->collectUniverseAttributes($universeDto));
 }
 
     public function update(int $universeId, UniverseDto $universeDto): Model
     {
-        $attributes = [
+        return $this->universeRepository->update($universeId, $this->collectUniverseAttributes($universeDto));
+    }
+
+    protected function collectUniverseAttributes(UniverseDto $universeDto): array
+    {
+        return [
             'en_name' => $universeDto->getEnName(),
             'ru_name' => $universeDto->getRuName(),
             'creator' => $universeDto->getCreator(),
             'meta' => [
                 'description' => $universeDto->getDescription(),
                 'birth_date' => $universeDto->getBirthDate(),
-                'wiki_link' => $universeDto->getWikiLink(),
+                'links' => $universeDto->getLinks(),
             ],
         ];
-        return $this->universeRepository->update($universeId, $attributes);
     }
 
     public function destroy(int $universeId): void

@@ -11,7 +11,7 @@ class UniverseDto
     protected ?string $creator;
     protected ?string $description;
     protected ?string $birthDate;
-    protected ?string $wikiLink;
+    protected ?array $links;
 
     public function __construct(
         ?string $ruName,
@@ -19,14 +19,14 @@ class UniverseDto
         ?string $creator,
         ?string $description,
         ?string $birthDate,
-        ?string $wikiLink
+        ?array $links
     ) {
         $this->enName = $enName;
         $this->ruName = $ruName;
         $this->creator = $creator;
         $this->description = $description;
         $this->birthDate = $birthDate;
-        $this->wikiLink = $wikiLink;
+        $this->links = $links;
     }
 
     public function getEnName(): ?string
@@ -54,8 +54,8 @@ class UniverseDto
         return $this->birthDate;
     }
 
-    public function getWikiLink(): ?string
+    public function getLinks(): ?array
     {
-        return $this->wikiLink;
+        return $this->links;
     }
 }

@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace ViewSeq\Http\Requests\Universe;
+namespace Shared\Http\Requests;
 
 use Shared\Dto\SearchPaginationDto;
-use Shared\Http\Requests\PaginationRequest;
 
-class UniverseIndexRequest extends PaginationRequest
+class IndexRequest extends PaginationRequest
 {
     /**
      * @return string[]
@@ -17,7 +16,7 @@ class UniverseIndexRequest extends PaginationRequest
         return array_merge(
             parent::rules(),
             [
-                'search.search' => 'nullable|string|max:255',
+                'search' => 'nullable|string|max:255',
             ],
         );
     }
@@ -30,7 +29,7 @@ class UniverseIndexRequest extends PaginationRequest
         return array_merge(
             parent::attributes(),
             [
-                'search.search' => trans('universe.form.search'),
+                'search' => trans('shared.search'),
             ],
         );
     }

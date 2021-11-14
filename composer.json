@@ -25,6 +25,7 @@
             "App\\": "app/",
             "ViewSeq\\": "app/ViewSeq/",
             "Shared\\": "app/Shared/",
+            "Wikipedia\\": "app/Api/Wikipedia",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }
