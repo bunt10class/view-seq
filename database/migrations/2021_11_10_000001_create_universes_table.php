@@ -10,9 +10,7 @@ class CreateUniversesTable extends Migration
     {
         Schema::create('universes', function (Blueprint $table) {
             $table->id('universe_id');
-            $table->string('en_name')->nullable();
-            $table->string('ru_name')->nullable();
-            $table->string('creator')->nullable();
+            $table->string('name');
             $table->json('meta')->nullable();
             $table->timestamps();
             $table->softDeletes();

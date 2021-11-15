@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace ViewSeq\Services;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Shared\Dto\SearchPaginationDto;
 use Shared\ValueObjects\Paginator;
-use ViewSeq\Dto\UniverseItemStoreDto;
-use ViewSeq\Dto\UniverseItemUpdateDto;
 use ViewSeq\Repositories\UniverseItemRepository;
+use ViewSeq\ValueObjects\ArtItem\UniverseItemArtItem;
 
 class UniverseItemService
 {
@@ -21,12 +20,12 @@ class UniverseItemService
         $this->universeItemRepository = $universeItemRepository;
     }
 
-    public function index(int $universeId, SearchPaginationDto $searchPaginationDto): Collection
+    public function index(int $universeId, SearchPaginationDto $searchPaginationDto): LengthAwarePaginator
     {
         $search = $searchPaginationDto->getSearch() ?? '';
         $paginator = new Paginator($searchPaginationDto->getPage(), $searchPaginationDto->getPerPage());
 
-        return $this->universeItemRepository->getUniverseItemsOrderByReleaseDateWithSearchAndPagination(
+        return $this->universeItemRepository->getUniverseItemsOrderByReleasedAtWithSearchAndPagination(
             $universeId,
             $search,
             $paginator
@@ -38,37 +37,17 @@ class UniverseItemService
         return $this->universeItemRepository->getById($universeItemId);
     }
 
-    public function store(int $universeId, UniverseItemStoreDto $universeItemDto): Model
+    public function store(int $universeId, UniverseItemArtItem $universeItemArtItem): Model
     {
-        $attributes = [
-            'universe_id' => $universeId,
-            'en_name' => $universeItemDto->getEnName(),
-            'ru_name' => $universeItemDto->getRuName(),
-            'art_item_type' => $universeItemDto->getArtItemType(),
-            'released_at' => $universeItemDto->getReleasedAt(),
-            'next_item_id' => $universeItemDto->getNextItemId(),
-            'meta' => [
-                'genre' => $universeItemDto->getGenre(),
-                'links' => $universeItemDto->getLinks(),
-                'info' => $universeItemDto->getInfo(),
-            ],
-        ];
+        $attributes = $universeItemArtItem->toArrayForStore();
+        $attributes['universe_id'] = $universeId;
         return $this->universeItemRepository->save($attributes);
 }
 
-    public function update(int $universeId, UniverseItemUpdateDto $universeItemDto): Model
+    public function update(int $universeId, UniverseItemArtItem $universeItemArtItem): Model
     {
-        $attributes = [
-            'en_name' => $universeItemDto->getEnName(),
-            'ru_name' => $universeItemDto->getRuName(),
-            'released_at' => $universeItemDto->getReleasedAt(),
-            'next_item_id' => $universeItemDto->getNextItemId(),
-            'meta' => [
-                'genre' => $universeItemDto->getGenre(),
-                'links' => $universeItemDto->getLinks(),
-                'info' => $universeItemDto->getInfo(),
-            ],
-        ];
+        $attributes = $universeItemArtItem->toArrayForUpdate();
+        $attributes['universe_id'] = $universeId;
         return $this->universeItemRepository->update($universeId, $attributes);
     }
 

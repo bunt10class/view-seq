@@ -4,40 +4,33 @@ declare(strict_types=1);
 
 namespace ViewSeq\ValueObjects;
 
+use ViewSeq\ValueObjects\ArtItem\ArtItemInfo;
+
 class UniverseItemMeta
 {
-    protected string $genre;
+    protected ArtItemInfo $info;
+    protected array $participants;
     protected array $links;
-    protected array $info;
 
-    public function __construct(string $genre, array $links, array $info)
+    public function __construct(ArtItemInfo $info, array $participants, array $links)
     {
-        $this->genre = $genre;
-        $this->links = $links;
         $this->info = $info;
+        $this->participants = $participants;
+        $this->links = $links;
     }
 
-    public function getGenre(): string
+    public function getInfo(): ArtItemInfo
     {
-        return $this->genre;
+        return $this->info;
+    }
+
+    public function getParticipants(): array
+    {
+        return $this->participants;
     }
 
     public function getLinks(): array
     {
         return $this->links;
-    }
-
-    public function getInfo(): array
-    {
-        return $this->info;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'genre' => $this->getGenre(),
-            'links' => $this->getLinks(),
-            'info' => $this->getInfo(),
-        ];
     }
 }

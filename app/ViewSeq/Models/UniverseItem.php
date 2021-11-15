@@ -15,17 +15,17 @@ use ViewSeq\ValueObjects\UniverseItemMeta;
 /**
  * @property int $universe_item_id
  * @property int $universe_id
- * @property string|null $en_name
- * @property string|null $ru_name
+ * @property string $name
  * @property string $art_item_type
  * @property Datetime|null $released_at
- * @property int|null $next_item_id
+ * @property int|null $next_id_in_chronology
  * @property UniverseItemMeta $meta
  *
  * @property Datetime|null $created_at
  * @property Datetime|null $updated_at
  *
  * @property Universe $universe
+ * @property UniverseItem $nextIdInChronology
  */
 class UniverseItem extends Model
 {
@@ -37,11 +37,10 @@ class UniverseItem extends Model
     /** @var string[] */
     protected $fillable = [
         'universe_id',
-        'en_name',
-        'ru_name',
+        'name',
         'art_item_type',
         'released_at',
-        'next_item_id',
+        'next_id_in_chronology',
         'meta',
     ];
 
@@ -56,5 +55,10 @@ class UniverseItem extends Model
     public function universe(): HasOne
     {
         return $this->hasOne(Universe::class, 'universe_id', 'universe_id');
+    }
+
+    public function nextIdInChronology(): HasOne
+    {
+        return $this->hasOne(self::class, 'universe_item_id', 'next_id_in_chronology');
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ViewSeq\Http\Requests;
 
-use ViewSeq\Dto\UniverseItemStoreDto;
 use ViewSeq\Helpers\ArtItemHelper;
+use ViewSeq\ValueObjects\ArtItem\UniverseItemArtItem;
 
 class UniverseItemStoreRequest extends UniverseItemUpdateRequest
 {
@@ -36,16 +36,17 @@ class UniverseItemStoreRequest extends UniverseItemUpdateRequest
         );
     }
 
-    public function getUniverseItemDto(): UniverseItemStoreDto
+    public function getUniverseItemArtItem(): UniverseItemArtItem
     {
-        return new UniverseItemStoreDto(
-            $this->input('attributes.en_name'),
-            $this->input('attributes.ru_name'),
+        return UniverseItemArtItem::make(
+            $this->input('attributes.name'),
             $this->input('attributes.art_item_type'),
-            $this->input('attributes.released_at'),
+            $this->input('attributes.year'),
             $this->input('attributes.genre'),
-            $this->input('attributes.links'),
-            $this->input('attributes.info'),
+            $this->input('attributes.description'),
+            $this->input('attributes.released_at'),
+            (array)$this->input('attributes.participants'),
+            (array)$this->input('attributes.links'),
         );
     }
 }

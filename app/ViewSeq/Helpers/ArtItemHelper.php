@@ -8,6 +8,8 @@ use Illuminate\Support\Arr;
 
 class ArtItemHelper
 {
+    public const TYPE_UNIVERSE = 'universe';
+
     public const TYPE_BOARD_GAME = 'board_game';
     public const TYPE_BOOK = 'book';
     public const TYPE_INTERACTIVE_MOVIE = 'interactive_movie';

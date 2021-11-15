@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace ViewSeq\Services;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Shared\Dto\SearchPaginationDto;
 use Shared\Factories\PaginatorFactory;
-use Shared\ValueObjects\Paginator;
-use ViewSeq\Dto\UniverseDto;
+use ViewSeq\Models\Universe;
 use ViewSeq\Repositories\UniverseRepository;
+use ViewSeq\ValueObjects\ArtItem\UniverseArtItem;
 
 class UniverseService
 {
+    protected ElasticSearchService $searchService;
     protected UniverseRepository $universeRepository;
 
-    public function __construct(UniverseRepository $universeRepository)
-    {
+    public function __construct(
+        ElasticSearchService $searchService,
+        UniverseRepository $universeRepository
+    ) {
+        $this->searchService = $searchService;
         $this->universeRepository = $universeRepository;
     }
 
@@ -35,28 +38,23 @@ class UniverseService
         return $this->universeRepository->getById($universeId);
     }
 
-    public function store(UniverseDto $universeDto): Model
+    public function store(UniverseArtItem $universeArtItem): Universe
     {
-        return $this->universeRepository->save($this->collectUniverseAttributes($universeDto));
+        /** @var Universe $universe */
+        $universe = $this->universeRepository->save($universeArtItem->toArrayForEloquent());
+
+//        $this->searchService->create(Universe::class, [
+//            'id' => $universe->universe_id,
+//            'name' => $universe->name,
+//            'creator' => $universe->creator,
+//        ]);
+
+        return $universe;
 }
 
-    public function update(int $universeId, UniverseDto $universeDto): Model
+    public function update(int $universeId, UniverseArtItem $universeArtItem): Model
     {
-        return $this->universeRepository->update($universeId, $this->collectUniverseAttributes($universeDto));
-    }
-
-    protected function collectUniverseAttributes(UniverseDto $universeDto): array
-    {
-        return [
-            'en_name' => $universeDto->getEnName(),
-            'ru_name' => $universeDto->getRuName(),
-            'creator' => $universeDto->getCreator(),
-            'meta' => [
-                'description' => $universeDto->getDescription(),
-                'birth_date' => $universeDto->getBirthDate(),
-                'links' => $universeDto->getLinks(),
-            ],
-        ];
+        return $this->universeRepository->update($universeId, $universeArtItem->toArrayForEloquent());
     }
 
     public function destroy(int $universeId): void

@@ -17,9 +17,7 @@ use ViewSeq\ValueObjects\UniverseMeta;
 
 /**
  * @property int $universe_id
- * @property string|null $en_name
- * @property string|null $ru_name
- * @property string|null $creator
+ * @property string $name
  * @property UniverseMeta $meta
  *
  * @property Datetime|null $created_at
@@ -38,9 +36,7 @@ class Universe extends Model
 
     /** @var string[] */
     protected $fillable = [
-        'en_name',
-        'ru_name',
-        'creator',
+        'name',
         'meta',
     ];
 

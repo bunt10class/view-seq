@@ -38,14 +38,14 @@ class UniverseItemController
 
     public function store(UniverseItemStoreRequest $request, int $universeId): UniverseItemResource
     {
-        $result = $this->universeItemService->store($universeId, $request->getUniverseItemDto());
+        $result = $this->universeItemService->store($universeId, $request->getUniverseItemArtItem());
 
         return UniverseItemResource::make($result);
     }
 
     public function update(UniverseItemUpdateRequest $request, int $universeId, int $universeItemId): UniverseItemResource
     {
-        $result = $this->universeItemService->update($universeId, $request->getUniverseItemUpdateDto());
+        $result = $this->universeItemService->update($universeId, $request->getUniverseItemArtItem());
 
         return UniverseItemResource::make($result);
     }

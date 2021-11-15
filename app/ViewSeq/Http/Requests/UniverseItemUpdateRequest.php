@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace ViewSeq\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use ViewSeq\Dto\UniverseItemUpdateDto;
+use ViewSeq\ValueObjects\ArtItem\UniverseItemArtItem;
 
 class UniverseItemUpdateRequest extends FormRequest
 {
@@ -15,14 +15,15 @@ class UniverseItemUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'attributes.en_name' => 'required_without:ru_name|string|max:255',
-            'attributes.ru_name' => 'required_without:en_name|string|max:255',
-            'attributes.released_at' => 'nullable|string|date',
+            'attributes.name' => 'required|string|max:255',
+            'attributes.year' => 'nullable|string|max:255',
             'attributes.genre' => 'nullable|string|max:255',
+            'attributes.description' => 'nullable|string|max:10000',
+            'attributes.released_at' => 'nullable|string|date',
+            'attributes.participants' => 'nullable|array',
+            'attributes.participants.*' => 'nullable|string|max:255',
             'attributes.links' => 'nullable|array',
             'attributes.links.*' => 'nullable|string|max:255',
-            'attributes.info' => 'nullable|array',
-            'attributes.info.*' => 'nullable|string|max:255',
         ];
     }
 
@@ -32,27 +33,29 @@ class UniverseItemUpdateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'attributes.universe_id' => trans('universe.fields.universe_id'),
-            'attributes.en_name' => trans('universe.fields.en_name'),
-            'attributes.art_item_type' => trans('universe.fields.art_item_type'),
-            'attributes.released_at' => trans('universe.fields.released_at'),
+            'attributes.name' => trans('universe.fields.name'),
+            'attributes.year' => trans('universe.fields.year'),
             'attributes.genre' => trans('universe.fields.genre'),
+            'attributes.description' => trans('universe.fields.description'),
+            'attributes.released_at' => trans('universe.fields.released_at'),
+            'attributes.participants' => trans('universe.fields.participants'),
+            'attributes.participants.*' => trans('universe.fields.participants_item'),
             'attributes.links' => trans('universe.fields.links'),
             'attributes.link.*' => trans('universe.fields.link'),
-            'attributes.info' => trans('universe.fields.info'),
-            'attributes.info.*' => trans('universe.fields.info_item'),
         ];
     }
 
-    public function getUniverseItemUpdateDto(): UniverseItemUpdateDto
+    public function getUniverseItemArtItem(): UniverseItemArtItem
     {
-        return new UniverseItemUpdateDto(
-            $this->input('attributes.en_name'),
-            $this->input('attributes.ru_name'),
-            $this->input('attributes.released_at'),
+        return UniverseItemArtItem::make(
+            $this->input('attributes.name'),
+            null,
+            $this->input('attributes.year'),
             $this->input('attributes.genre'),
-            $this->input('attributes.links'),
-            $this->input('attributes.info'),
+            $this->input('attributes.description'),
+            $this->input('attributes.released_at'),
+            (array)$this->input('attributes.participants'),
+            (array)$this->input('attributes.links'),
         );
     }
 }

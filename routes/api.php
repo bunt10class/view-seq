@@ -8,3 +8,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 \ViewSeq\Http\Routes\UniverseRoute::initRoutes();
+
+Route::get('search', [\ViewSeq\Http\Controllers\SearchController::class, 'search']);

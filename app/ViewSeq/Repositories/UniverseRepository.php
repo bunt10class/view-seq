@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace ViewSeq\Repositories;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Shared\Repositories\BaseEloquentRepository;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,11 +28,6 @@ class UniverseRepository extends BaseEloquentRepository
 
     protected function queryByString(Builder $query, string $search): Builder
     {
-        return $query->where(function ($query) use ($search) {
-            $query
-                ->where('en_name', 'like', '%' . $search . '%')
-                ->orWhere('ru_name', 'like', '%' . $search . '%')
-                ->orWhere('creator', 'like', '%' . $search . '%');
-        });
+        return $query->where('name', 'like', '%' . $search . '%');
     }
 }

@@ -13,9 +13,6 @@ use Shared\ValueObjects\Paginator;
 
 abstract class BaseEloquentRepository
 {
-    protected const CURRENT_PAGE = 1;
-    protected const PER_PAGE = 20;
-
     protected Model $model;
 
     public function __construct(Model $model)

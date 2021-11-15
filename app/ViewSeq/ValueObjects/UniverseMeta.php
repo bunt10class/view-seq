@@ -4,29 +4,34 @@ declare(strict_types=1);
 
 namespace ViewSeq\ValueObjects;
 
-use Shared\ValueObjects\Datetime;
-
 class UniverseMeta
 {
+    protected ?string $creator;
     protected ?string $description;
-    protected ?Datetime $birthDate;
+    protected ?string $year;
     protected array $links;
 
-    public function __construct(?string $description, ?Datetime $birthDate, array $links)
+    public function __construct(?string $creator, ?string $description, ?string $year, array $links)
     {
+        $this->creator = $creator;
         $this->description = $description;
-        $this->birthDate = $birthDate;
+        $this->year = $year;
         $this->links = $links;
     }
 
-    public function getDescription(): string
+    public function getCreator(): ?string
     {
-        return $this->description;
+        return $this->creator;
     }
 
-    public function getBirthDate(): ?Datetime
+    public function getYear(): ?string
     {
-        return $this->birthDate;
+        return $this->year;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
     }
 
     public function getLinks(): array
@@ -37,8 +42,9 @@ class UniverseMeta
     public function toArray(): array
     {
         return [
+            'creator' => $this->getCreator(),
+            'year' => $this->getYear(),
             'description' => $this->getDescription(),
-            'birth_date' => $this->getBirthDate(),
             'links' => $this->getLinks(),
         ];
     }
